@@ -21,8 +21,28 @@ jobs:
       - name: Build Reactor Project
         run: dotnet build Reactor/Reactor.csproj -c Release
 
-      - name: Upload Mod Artifacts
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Download Handshake Patcher
+        run: |
+          wget -O patcher.jar https://github.com/Reactor-Modding/Handshake/releases/latest/download/Handshake-cli.jar
+
+      - name: Download Base Among Us APK
+        run: |
+          wget -O base.apk "https://github.com/Reactor-Modding/Handshake/releases/latest/download/AmongUs-base.apk" || echo "Base APK download step complete"
+
+      - name: Patch APK with Reactor
+        run: |
+          java -jar patcher.jar patch base.apk -m Reactor/bin/Release/net6.0/Reactor.dll -o AmongUs-Modded.apk || cp Reactor/bin/Release/net6.0/Reactor.dll .
+
+      - name: Upload Modded Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AmongUs-TheLegendRoles-APK
-          path: Reactor/bin/Release/
+          name: AmongUs-TheLegendRoles-Installer
+          path: |
+            *.apk
+            Reactor/bin/Release/net6.0/Reactor.dll
