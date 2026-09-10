@@ -24,7 +24,7 @@ namespace TheLegendRoles
             if (body != null && !isCurrentlyReviving && Time.time >= lastReviveTime + ReviveCooldown)
             {
                 targetBody = body;
-                StartCoroutine(ReviveCoroutine());
+                StartCoroutine(nameof(ReviveCoroutine));
             }
         }
 
