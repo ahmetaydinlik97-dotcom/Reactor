@@ -83,7 +83,7 @@ namespace TheLegendRoles
         public bool IsNoVote { get; private set; } = true;
     }
 
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.ConfirmVote))]
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CmdCastVote))]
     public static class NoVotePatch
     {
         public static bool Prefix(MeetingHud __instance, byte srcPlayerId, byte suspectPlayerId)
