@@ -1,0 +1,28 @@
+name: Build Android Modded APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Reactor Project
+        run: dotnet build Reactor/Reactor.csproj -c Release
+
+      - name: Upload Mod Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: AmongUs-TheLegendRoles-APK
+          path: Reactor/bin/Release/
